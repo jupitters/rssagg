@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,6 +11,8 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 	"github.com/jupitters/rssagg/internal/database"
+
+	_ "github.com/lib/pq"
 )
 
 type apiConfig struct {
@@ -28,6 +31,15 @@ func main(){
 	dbURL := os.Getenv(("DB_URL"))
 	if dbURL == "" {
 		log.Fatal("DB_URL não encontrada no ambiente.")
+	}
+
+	conn, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatal("Não conectado ao banco de dados:", err)
+	}
+
+	apiCfg := apiConfig{
+		DB: database.New(conn),
 	}
 
 	router := chi.NewRouter()
