@@ -12,23 +12,27 @@ import (
 
 func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
-		Name string `json:name`
+		Name string `json:"name"`
 	}
 	decoder := json.NewDecoder(r.Body)
 
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Erro ao ajustar o json.:", err))
+		respondWithError(w, 400, fmt.Sprintf("Erro ao ajustar o json:", err))
 		return
 	}
 
-	apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+	user, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
 		ID: uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name: params.Name,
 	})
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Erro ao criar o usuario:", err))
+		return
+	}
 
-	respondWithJSON(w, 200, struct{}{})
+	respondWithJSON(w, 200, user)
 }
