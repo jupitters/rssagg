@@ -6,10 +6,15 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
+	"github.com/jupitters/rssagg/internal/database"
 )
+
+type apiConfig struct {
+	DB *database.Queries
+}
 
 func main(){
 
@@ -18,6 +23,11 @@ func main(){
 	portString := os.Getenv("PORT")
 	if portString == "" {
 		log.Fatal("PORT não encontrada no ambiente.")
+	}
+
+	dbURL := os.Getenv(("DB_URL"))
+	if dbURL == "" {
+		log.Fatal("DB_URL não encontrada no ambiente.")
 	}
 
 	router := chi.NewRouter()
