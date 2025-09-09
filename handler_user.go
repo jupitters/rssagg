@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jupitters/rssagg/internal/auth"
 	"github.com/jupitters/rssagg/internal/database"
 )
 
@@ -24,10 +25,10 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	}
 
 	user, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
-		ID: uuid.New(),
+		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		Name: params.Name,
+		Name:      params.Name,
 	})
 	if err != nil {
 		respondWithError(w, 400, fmt.Sprintf("Erro ao criar o usuario: %v", err))
@@ -38,5 +39,17 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 }
 
 func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
-	
+	apiKey, err := auth.GetAPIKey(r.Header)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Erro de autenticação: %v", err))
+		return
+	}
+
+	user, err := apiCfg.DB.GetUserByApiKey(r.Context(), apiKey)
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Usuario não encontrado: %v", err))
+		return
+	}
+
+	respondWithJSON(w, 200, databaseUserToUser(user))
 }
