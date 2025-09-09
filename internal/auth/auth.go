@@ -16,7 +16,7 @@ func GetAPIKey(headers http.Header) (string, error) {
 
 	vals := strings.Split(val, " ")
 	if len(vals) != 2 {
-		return "", errors.New("header de autenticação com arugmentos demais")
+		return "", errors.New("header de autenticação com com mal formação")
 	}
 	if vals[0] != "ApiKey" {
 		return "", errors.New("argumento inexistente no header de autenticação")
