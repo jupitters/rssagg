@@ -57,7 +57,7 @@ func main(){
 	v1Router.Get("/healthz", handlerReadiness)
 	router.Mount("/v1", v1Router)
 	v1Router.Get("/err", handlerErr)
-	v1Router.Post("/users", apiCfg.handlerCreateUser())
+	v1Router.Post("/users", apiCfg.handlerCreateUser)
 
 	srv := &http.Server{
 		Handler: router,
@@ -65,7 +65,7 @@ func main(){
 	}
 
 	log.Printf("Servidor iniciado em porta %v", portString)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
