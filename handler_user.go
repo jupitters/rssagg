@@ -19,7 +19,7 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Erro ao ajustar o json: %s", err))
+		respondWithError(w, 400, fmt.Sprintf("Erro ao ajustar o json: %v", err))
 		return
 	}
 
@@ -30,9 +30,9 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 		Name: params.Name,
 	})
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Erro ao criar o usuario: %s", err))
+		respondWithError(w, 400, fmt.Sprintf("Erro ao criar o usuario: %v", err))
 		return
 	}
 
-	respondWithJSON(w, 200, user)
+	respondWithJSON(w, 201, user)
 }
