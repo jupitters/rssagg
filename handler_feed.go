@@ -37,5 +37,5 @@ func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	respondWithJSON(w, 201, databaseUserToUser(feed))
+	respondWithJSON(w, 201, feed)
 }
