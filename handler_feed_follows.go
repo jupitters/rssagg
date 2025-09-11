@@ -45,5 +45,5 @@ func (apiCfg *apiConfig) handlerGetFeedFollow(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	respondWithJSON(w, 201, databaseFeedFollowToFeedFollow(feedFollows))
+	respondWithJSON(w, 201, databaseFeedFollowsToFeedFollows(feedFollows))
 }
