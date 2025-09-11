@@ -71,3 +71,12 @@ func databaseFeedFollowToFeedFollow(dbFeed database.FeedFollow) FeedFollow {
 		FeedID:    dbFeed.FeedID,
 	}
 }
+
+func databaseFeedFollowsToFeedFollows(dbFeeds []database.Feed) []Feed {
+	feeds := []Feed{}
+
+	for _, dbFeed := range dbFeeds {
+		feeds = append(feeds, databaseFeedToFeed(dbFeed))
+	}
+	return feeds
+}
