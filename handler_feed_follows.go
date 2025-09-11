@@ -10,10 +10,9 @@ import (
 	"github.com/jupitters/rssagg/internal/database"
 )
 
-func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
+		FeedID string `json:"feed_id"`
 	}
 	decoder := json.NewDecoder(r.Body)
 
