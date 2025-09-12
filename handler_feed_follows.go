@@ -66,5 +66,5 @@ func (apiCfg *apiConfig) handlerDeleteFeedFollows(w http.ResponseWriter, r *http
 		return
 	}
 
-	respondWithJSON(w, 201, databaseFeedFollowsToFeedFollows(feedFollows))
+	respondWithJSON(w, 200, struct{}{})
 }
