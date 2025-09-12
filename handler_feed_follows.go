@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/jupitters/rssagg/internal/database"
 )
@@ -49,12 +50,19 @@ func (apiCfg *apiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Re
 }
 
 func (apiCfg *apiConfig) handlerDeleteFeedFollows(w http.ResponseWriter, r *http.Request, user database.User) {
-	feedFollows, err := apiCfg.DB.DeleteFeedFollows(r.Context(), database.DeleteFeedFollowsParams{
-		ID:     user.ID,
+	feedFollowIDstr := chi.URLParam(r, "feedFollowID")
+	feedFollowId, err := uuid.Parse(feedFollowIDstr)
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Erro ao converter string em UUID: %v", err))
+		return
+	}
+
+	err = apiCfg.DB.DeleteFeedFollows(r.Context(), database.DeleteFeedFollowsParams{
+		ID:     feedFollowId,
 		UserID: user.ID,
 	})
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Erro ao buscar feeds seguidos: %v", err))
+		respondWithError(w, 400, fmt.Sprintf("Erro ao deletar feed seguido: %v", err))
 		return
 	}
 
