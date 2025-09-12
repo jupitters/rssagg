@@ -1,5 +1,12 @@
 package main
 
+import (
+	"encoding/xml"
+	"io"
+	"net/http"
+	"time"
+)
+
 type RSSFeed struct {
 	Channel struct {
 		Title       string    `xml:"title"`
@@ -18,5 +25,26 @@ type RSSItem struct {
 }
 
 func URLtoFeed(url string) (RSSFeed, error) {
+	httpClient := http.Client{
+		Timeout: 10 * time.Second,
+	}
 
+	resp, err := http.Get(url)
+	if err != nil {
+		return RSSFeed{}, err
+	}
+	defer resp.Body.Close()
+
+	dat, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	rssFeed := RSSFeed{}
+	xml.Unmarshal(dat, &rssFeed)
+	if err != nil {
+		return nil, err
+	}
+
+	return rssFeed, nil
 }
