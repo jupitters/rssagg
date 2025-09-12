@@ -29,7 +29,7 @@ func URLtoFeed(url string) (RSSFeed, error) {
 		Timeout: 10 * time.Second,
 	}
 
-	resp, err := http.Get(url)
+	resp, err := httpClient.Get(url)
 	if err != nil {
 		return RSSFeed{}, err
 	}
@@ -37,13 +37,13 @@ func URLtoFeed(url string) (RSSFeed, error) {
 
 	dat, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return RSSFeed{}, err
 	}
 
 	rssFeed := RSSFeed{}
 	xml.Unmarshal(dat, &rssFeed)
 	if err != nil {
-		return nil, err
+		return RSSFeed{}, err
 	}
 
 	return rssFeed, nil
