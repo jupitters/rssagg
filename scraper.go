@@ -44,4 +44,16 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 		log.Println("Erro marcando o feed como fetched:", err)
 		return
 	}
+
+	rssFeed, err := URLtoFeed(feed.Url)
+	if err != nil {
+		log.Println("Erro no fetching do feed:", err)
+		return
+	}
+
+	for _, item := range rssFeed.Channel.Item {
+		log.Println("Post encontrado:", item.Title)
+	}
+	log.Printf("Feed %s buscado, %v posts encontrados,", feed.Name, len(rssFeed.Channel.Item))
+
 }
