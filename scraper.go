@@ -41,7 +41,7 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 
 	_, err := db.MarkFeedAsFetched(context.Background(), feed.ID)
 	if err != nil {
-		log.Println("Erro marcando o feed como fetched: %v", err)
+		log.Println("Erro marcando o feed como fetched:", err)
 		return
 	}
 }
