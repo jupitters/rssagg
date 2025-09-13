@@ -22,7 +22,7 @@ func startScrapping(
 			int32(concurrency),
 		)
 		if err != nil {
-			log.Println("Erro buscando feeds: %v", err)
+			log.Println("Erro buscando feeds:", err)
 			continue
 		}
 
