@@ -115,4 +115,6 @@ func databasePostsToPosts(dbPosts []database.Post) []Post {
 	for _, dbPost := range dbPosts {
 		posts = append(posts, databasePostToPost(dbPost))
 	}
+
+	return posts
 }
